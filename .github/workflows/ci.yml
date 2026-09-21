@@ -18,8 +18,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # The floor declared in engines, and current LTS.
-        node: ['18', '22']
+        # 22 and 24 run the full suite. The suite itself needs
+        # --experimental-test-module-mocks, which landed after 18, so 18 is
+        # covered by a smoke job below rather than dropped — the daemon
+        # itself still supports it, as engines declares.
+        node: ['22', '24']
 
     steps:
       - uses: actions/checkout@v4
@@ -40,6 +43,24 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+  # engines says node >=18, so prove the app actually loads there. The test
+  # suite cannot run on 18 (module mocking is newer), but the runtime must.
+  smoke-node18:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
+      - run: npm ci
+      - name: Load every module
+        run: |
+          node --check src/daemon.js
+          node -e "await import('./src/state.js'); await import('./src/player.js'); await import('./src/mirror.js'); await import('./src/browser.js'); await import('./src/pairing.js'); console.log('modules load on', process.version)"
+      - name: CLI runs
+        run: node bin/yt-cast.js --help
 
   audit:
     runs-on: ubuntu-latest

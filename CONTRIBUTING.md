@@ -44,6 +44,10 @@ npm test                                   # everything
 node --test test/state.test.js             # one file
 ```
 
+Running the suite needs **Node 22 or newer**, because it uses
+`--experimental-test-module-mocks`. The daemon itself still runs on Node 18, as
+`engines` declares, and CI keeps that honest with a separate smoke job.
+
 The suite needs no phone, no browser and no network. `src/browser.js` is
 replaced with `mock.module`, and the injected sync script is extracted from
 source and evaluated against a fake `<video>` in a `vm` sandbox, so the real
