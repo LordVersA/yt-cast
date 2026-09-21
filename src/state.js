@@ -2,7 +2,9 @@ import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 
-export const STATE_DIR = join(homedir(), '.yt-cast');
+// YTC_STATE_DIR relocates all runtime state. The daemon and CLI must agree,
+// so it is read once here and used everywhere.
+export const STATE_DIR = process.env.YTC_STATE_DIR || join(homedir(), '.yt-cast');
 export const STATE_FILE = join(STATE_DIR, 'state.json');
 export const LOG_FILE = join(STATE_DIR, 'daemon.log');
 

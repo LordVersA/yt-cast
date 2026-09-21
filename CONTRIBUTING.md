@@ -37,10 +37,26 @@ Restore the service when you're done:
 ./install.sh
 ```
 
-### Testing without a phone
+### Tests
 
-The player and mirror can be driven directly, which is how most of this was
-built:
+```bash
+npm test                                   # everything
+node --test test/state.test.js             # one file
+```
+
+The suite needs no phone, no browser and no network. `src/browser.js` is
+replaced with `mock.module`, and the injected sync script is extracted from
+source and evaluated against a fake `<video>` in a `vm` sandbox, so the real
+page contract stays under test without driving Chrome.
+
+Tests set `YTC_STATE_DIR` to a temporary directory before importing anything
+that reads it. Keep that first in any new test file — the modules resolve the
+path once at import time, so setting it afterwards is too late and the test
+would write to your real `~/.yt-cast`.
+
+The mirror tests are slow by nature: they wait on real 1s ticks.
+
+To drive the player by hand:
 
 ```js
 import RecordingPlayer from './src/player.js';
@@ -48,7 +64,6 @@ const player = new RecordingPlayer();
 player.setLogger({ info(){}, debug(){}, warn(){}, error(){} });
 await player.play({ id: 'jNQXAC9IVRw', context: {} }, 217);
 await player.seek(45);
-await player.pause();
 ```
 
 `setLogger` is needed because the framework normally injects one.
@@ -74,6 +89,10 @@ making browser-side scrubbing pointless.
 injection; sync does. When injection is unavailable the mirror disables sync but
 keeps opening tabs. Don't collapse these back into one flag.
 
+**Seeking while paused resumes.** Upstream `Player.seek()` calls `resume()` when
+the previous status was paused, so scrubbing a paused video starts it playing.
+That is deliberate — it is how a TV behaves — and the mirror must not fight it.
+
 **The state file is written atomically.** Writes go to a temp file and rename,
 because the CLI can read at any moment.
 
@@ -82,8 +101,7 @@ because the CLI can read at any moment.
 Match what's there: ES modules, no build step, no framework. Comments explain
 *why* something is the way it is, not what the line does.
 
-Run `node --check` on anything you touch. There is no test suite yet; if you
-add one, `node --test` is the natural fit since it needs no dependencies.
+Run `npm test` before opening a PR, and add tests for behaviour you change.
 
 ## Pull requests
 

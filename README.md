@@ -116,6 +116,7 @@ Environment variables, set in the launchd job at
 | `YTC_BROWSER` | `Google Chrome` | Browser to drive. Non-Chrome gets auto-open only |
 | `YTC_NAME` | `<hostname> (Browser)` | Name shown in the phone's cast list |
 | `YTC_LOG_LEVEL` | `info` | `error`, `warn`, `info`, `debug`, `none` |
+| `YTC_STATE_DIR` | `~/.yt-cast` | Where runtime state lives. Daemon and CLI must agree |
 
 Restart after changing: `launchctl kickstart -k gui/$UID/com.parsa.yt-cast`
 
@@ -185,6 +186,17 @@ available. They are reachable only from your local network.
 | `src/pairing.js` | TV-code fallback when discovery fails |
 | `bin/yt-cast.js` | The CLI |
 | `install.sh` | launchd job |
+
+## Tests
+
+```bash
+npm test
+```
+
+62 tests covering the drift math, URL building, the recording player, the
+injected sync script and the mirror's decision logic. No network, no browser
+and no phone: the browser layer is mocked and the sync script runs against a
+fake `<video>` element. Tests write to a temporary directory, never `~/.yt-cast`.
 
 ## Contributing
 

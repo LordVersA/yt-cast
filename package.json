@@ -4,7 +4,8 @@
   "description": "Cast from your phone's YouTube app to your Mac browser — it opens the video automatically and stays in sync as you play, pause and seek.",
   "scripts": {
     "daemon": "node src/daemon.js",
-    "start": "node src/daemon.js"
+    "start": "node src/daemon.js",
+    "test": "node --test --experimental-test-module-mocks \"test/**/*.test.js\""
   },
   "keywords": [
     "youtube",
