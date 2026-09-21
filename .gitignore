@@ -1,0 +1,9 @@
+node_modules/
+
+# Receiver session cache — holds screenId/deviceId pairing credentials.
+.node-persist/
+
+# Local runtime state (also lives in ~/.yt-cast).
+*.log
+*.tgz
+.DS_Store

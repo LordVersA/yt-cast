@@ -1,0 +1,32 @@
+{
+  "name": "yt-cast",
+  "version": "0.1.0",
+  "description": "Cast from your phone's YouTube app to your Mac browser — it opens the video automatically and stays in sync as you play, pause and seek.",
+  "scripts": {
+    "daemon": "node src/daemon.js",
+    "start": "node src/daemon.js"
+  },
+  "keywords": [
+    "youtube",
+    "cast",
+    "dial",
+    "lounge-api",
+    "macos",
+    "chromecast"
+  ],
+  "type": "module",
+  "dependencies": {
+    "yt-cast-receiver": "^2.1.0"
+  },
+  "bin": {
+    "yt-cast": "bin/yt-cast.js"
+  },
+  "license": "MIT",
+  "author": "Parsa Radfar",
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "darwin"
+  ]
+}
