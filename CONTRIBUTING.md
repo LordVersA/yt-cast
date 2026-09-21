@@ -103,6 +103,24 @@ Match what's there: ES modules, no build step, no framework. Comments explain
 
 Run `npm test` before opening a PR, and add tests for behaviour you change.
 
+## Releasing
+
+CI runs the suite on macOS against Node 18 and 22 for every push and pull
+request to `main`.
+
+A release is a version tag. `npm version` writes `package.json`, commits and
+tags in one step, which keeps the tag and the version from drifting apart —
+the release workflow refuses a tag that disagrees with `package.json`:
+
+```bash
+npm version patch     # or minor, major
+git push --follow-tags
+```
+
+The tag push runs the tests once more, then publishes a GitHub release with
+notes generated from the commits since the previous tag. Nothing is published
+to npm.
+
 ## Pull requests
 
 One change per PR, with a description of what it fixes and how you verified it.

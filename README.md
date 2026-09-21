@@ -1,5 +1,7 @@
 # yt-cast
 
+[![CI](https://github.com/LordVersA/yt-cast/actions/workflows/ci.yml/badge.svg)](https://github.com/LordVersA/yt-cast/actions/workflows/ci.yml)
+
 Cast from your phone's YouTube app to your Mac browser. The video opens by
 itself and stays in sync as you play, pause and seek on the phone.
 
@@ -61,7 +63,7 @@ The phone thinks it's casting to a TV. You get a normal YouTube page.
 ## Install
 
 ```bash
-git clone https://github.com/<you>/yt-cast.git
+git clone https://github.com/LordVersA/yt-cast.git
 cd yt-cast
 npm install
 ./install.sh     # starts the daemon, runs at login
