@@ -58,7 +58,14 @@ jobs:
       - name: Load every module
         run: |
           node --check src/daemon.js
-          node -e "await import('./src/state.js'); await import('./src/player.js'); await import('./src/mirror.js'); await import('./src/browser.js'); await import('./src/pairing.js'); console.log('modules load on', process.version)"
+          node --input-type=module -e "
+            await import('./src/state.js');
+            await import('./src/player.js');
+            await import('./src/mirror.js');
+            await import('./src/browser.js');
+            await import('./src/pairing.js');
+            console.log('modules load on', process.version);
+          "
       - name: CLI runs
         run: node bin/yt-cast.js --help
 
